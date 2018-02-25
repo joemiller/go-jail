@@ -33,16 +33,25 @@ func listCaps() []string {
 	return keys
 }
 
-// setCapabilities() resets all capabilities to empty and then applies the
-// capability BOUNDING set specified in bounds. Pass an empty slice to set
-// and empty bounding set.
-func setCapabilities(bounds []capability.Cap) error {
+// clearCapabilities clears all capability sets
+func clearCapabilities() error {
 	pid, err := capability.NewPid(os.Getpid())
 	if err != nil {
 		return err
 	}
-
 	pid.Clear(allCapabilityTypes)
-	pid.Set(capability.BOUNDS, bounds...)
 	return pid.Apply(allCapabilityTypes)
+}
+
+// setCapabilities() resets all capabilities to empty and then applies the
+// capability BOUNDING set specified in bounds. Pass an empty slice to set
+// and empty bounding set.
+func setCapabilities(capType capability.CapType, caps []capability.Cap) error {
+	pid, err := capability.NewPid(os.Getpid())
+	if err != nil {
+		return err
+	}
+	pid.Clear(capType)
+	pid.Set(capType, caps...)
+	return pid.Apply(capType)
 }

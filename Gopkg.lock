@@ -2,6 +2,18 @@
 
 
 [[projects]]
+  name = "github.com/opencontainers/runc"
+  packages = ["libcontainer/system"]
+  revision = "baf6536d6259209c3edfa2b22237af82942d3dfa"
+  version = "v0.1.1"
+
+[[projects]]
+  name = "github.com/seccomp/libseccomp-golang"
+  packages = ["."]
+  revision = "e3496e3a417d1dc9ecdceca5af2513271fed37a0"
+  version = "v0.9.0"
+
+[[projects]]
   branch = "master"
   name = "github.com/syndtr/gocapability"
   packages = ["capability"]
@@ -16,6 +28,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "17bb3ea37e47a32cd453921888f6556a2a185adcce5ff8643dc7ed93c3f329e4"
+  inputs-digest = "920a248cbbfebbec70c67baf28bed512a06a2ebd2d07d0407b73a415a611608e"
   solver-name = "gps-cdcl"
   solver-version = 1
