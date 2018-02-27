@@ -14,6 +14,13 @@ BASE_WHITELIST="execve,exit,read,open,close,mmap,mmap2,fstat,fstat64,access,mpro
 # remove 'write' and it should fail
 @test "wrap echo with incorrect seccomp whitelist for it to succeed" {
   run ./go-jail -user "daemon" -group "daemon" -syscall-allow="$BASE_WHITELIST" -- echo "hello world"
-	echo "output = ${output}"
-	[[ $status -eq 1 ]]
+  echo "output = ${output}"
+  [[ $status -ne 0 ]]
 }
+
+@test "denying the write syscall should cause echo to fail" {
+  run ./go-jail -user "daemon" -group "daemon" -syscall-deny="write" -- echo "hello world"
+  echo "output = ${output}"
+  [[ $status -ne 0 ]]
+}
+
