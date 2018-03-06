@@ -5,7 +5,8 @@ Simple wrapper for executing processes under a sandbox. Sandboxing is implemente
 with capabilities(7) filtering, and seccomp2 (syscall) filtering.
 
 WARNING: Consider this alpha quality software. It is an experiment at this stage.
-Don't use in production.
+Don't use in production, I haven't (but if you do, please send feedback via
+github issues).
 
 Usage
 -----
@@ -70,10 +71,52 @@ $ echo $?
 1
 ```
 
+Development & Testing
+---------------------
+
+This project is Linux specific and must be built and tested within Linux. You can
+still do "local development" on macOS with Docker installed. Use the `make devshell`
+command to create an interactive container suitable for build and test tasks.
+
+```
+$ make devshell
+...
+root@f9962fe0a031:/go/src/github.com/joemiller/go-jail# make deps
+root@f9962fe0a031:/go/src/github.com/joemiller/go-jail# make test
+root@f9962fe0a031:/go/src/github.com/joemiller/go-jail# make build
+root@f9962fe0a031:/go/src/github.com/joemiller/go-jail# exit
+```
+
+### Dependencies
+
+You will need libseccomp-dev (debian) or libseccomp-devel (redhat) packages installed
+to build a binary. The `build` and `test` make targets will build and run within a docker
+container that has these dependencies. This makes it easy to develop and build/test
+on platforms other than Linux (ie: macOS).
+
+To run tests, install `bats` (available in most distros).
+
+Run `make deps` to install Go dependencies.
+
+The `./Dockerfile.build` is also a good reference for package dependencies.
+
+### Tests
+
+Run `make test`. You must run `make build` first to create the go-jail binary. Tests
+are performed using `bats` utilizing the binary.
+
+### Build
+
+Run `make build`
+
 
 TODO:
+----
+
 - [x] decide on UI:
   - [x] minimal -- take a list of capabilities to add/drop, and a list of syscalls to blacklist or whitelist
   - [ ] oci/docker compatibility -- take a config.json file and use the capabilities and seccomp
       settings. This would allow more granular seccomp policies such as filtering on the args
       to syscalls
+- [x] CI/CD pipeline. build linux amd64 binary and push to github-releases
+- [ ] add license file
